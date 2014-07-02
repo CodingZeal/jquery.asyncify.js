@@ -22,7 +22,7 @@ Optionally add a followup callback
     // do something...
   });
 ```
-## Copyright
+## Credits
 
 Authored by Adam Cuppy (@acuppy) of Coding ZEAL (http://codingzeal.com)
 
