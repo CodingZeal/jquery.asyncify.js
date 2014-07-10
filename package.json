@@ -1,0 +1,14 @@
+{
+  "name": "jquery.asyncify",
+  "title": "jQuery Asyncify",
+  "author": "Adam Cuppy (http://github.com/acuppy)",
+  "copyright": "Coding ZEAL (http://codingzeal.com)",
+  "version": "0.2.0",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-jasmine": "~0.6.5",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-coffee": "~0.10.1"
+  }
+}
