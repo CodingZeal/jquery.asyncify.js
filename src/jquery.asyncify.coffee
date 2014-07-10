@@ -1,18 +1,26 @@
-$ = JQuery
-
 $ ->
 
   `/*
-    * jQuery Asyncify v0.1
+    * jQuery Asyncify v0.2
     *
     * @author Adam Cuppy
     * @copyright Coding ZEAL (http://codingzeal.com)
    */`
 
   class AsynifyForm
-    constructor: (form, callback) ->
+
+    defaultCallbacks:
+      before: $.noop
+      done: $.noop
+      fail: $.noop
+      always: $.noop
+      then: $.noop
+
+    constructor: (form, callbacks) ->
+      callbacks = { then: callbacks  } if $.isFunction(callbacks)
+
       @form = $(form)
-      @callback = callback
+      @callbacks = $.extend({}, @defaultCallbacks, callbacks)
 
     action: ->
       @form.prop('action')
@@ -23,10 +31,21 @@ $ ->
     bind: ->
       @form.on "submit", (e) =>
         e.preventDefault()
-        $[@method()](@action(), @form.serialize()).then (data) =>
-          @callback.call @form, data
+        @callbacks.before(@form)
+        @_xhr()
 
-  $.fn.asyncify = (callback) ->
+    _xhr: ->
+      _xhr = $.ajax( @action(), type: @method(), data: @form.serialize() )
+      _xhr.done @_bindToForm(@callbacks.done)
+      _xhr.fail @_bindToForm(@callbacks.fail)
+      _xhr.always @_bindToForm(@callbacks.always)
+      _xhr.then @_bindToForm(@callbacks.then)
+      _xhr
+
+    _bindToForm: (callback) ->
+      $.proxy(callback, @form)
+
+  $.fn.asyncify = (callbacks) ->
     @each ->
-      new AsynifyForm(@, callback).bind()
+      new AsynifyForm(@, callbacks).bind()
       return
